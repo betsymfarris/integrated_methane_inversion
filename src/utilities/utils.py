@@ -86,3 +86,13 @@ def download_hemcodiags_files(config):
         print(f"File {HemcoDiagFile} downloaded successfully.")
     else:
         print(f"File {HemcoDiagFile} already exists locally. Skipping download.")
+
+
+
+import yaml
+config_path ="../../config.yml"
+config = yaml.load(open(config_path), Loader=yaml.FullLoader)
+download_landcover_files(config)
+download_hemcodiags_files(config)
+
+

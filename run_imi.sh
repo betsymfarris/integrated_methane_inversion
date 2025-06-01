@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #SBATCH -N 1
-#SBATCH -c 1
+#SBATCH --ntasks=1
 #SBATCH --mem=2000
 #SBATCH -o "imi_output.log"
 
@@ -30,7 +30,7 @@ trap 'imi_failed $LINENO' ERR
 
 start_time=$(date)
 setup_start=$(date +%s)
-
+alias aws='awsv2' #BMF
 ##=======================================================================
 ## Parse config.yml file
 ##=======================================================================
@@ -79,7 +79,9 @@ else
         exit 1
     else
         printf "\nLoading GEOS-Chem environment: ${GEOSChemEnv}\n"
-        source ${GEOSChemEnv}
+        #set -x 
+	source ${GEOSChemEnv}
+	#set +x
     fi
 fi
 
@@ -166,8 +168,8 @@ if [[ -z "$DataPathTROPOMI" ]]; then
     else
         downloadScript=src/utilities/download_TROPOMI.py
     fi
-    sbatch --mem $RequestedMemory \
-        -c $RequestedCPUs \
+    sbatch --mem=$RequestedMemory \
+        --ntasks=$RequestedCPUs \
         -t $RequestedTime \
         -p $SchedulerPartition \
         -o imi_output.tmp \

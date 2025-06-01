@@ -2,15 +2,15 @@
 ## Documentation @ https://imi.readthedocs.io/en/latest/getting-started/imi-config-file.html
 
 ## General
-RunName: "CA_SeptWeek1_2024_fullres"
+RunName: "DJB_Feb2025_week3"
 isAWS: false
 UseSlurm: true
 SafeMode: true
 S3Upload: false
 
 ## Period of interest
-StartDate: 20240901
-EndDate: 20240908
+StartDate: 20250214
+EndDate: 20220221
 SpinupMonths: 1
 
 ## Use blended TROPOMI+GOSAT data (true)? Or use operational TROPOMI data (false)?
@@ -39,10 +39,10 @@ RegionID: "NA"
 ## Region of interest
 ##   These lat/lon bounds are only used if CreateAutomaticRectilinearStateVectorFile: true
 ##   Otherwise lat/lon bounds are determined from StateVectorFile
-LonMin: -122
-LonMax: -114
-LatMin: 32.5
-LatMax: 36
+LonMin: -105.4
+LonMax: -103.5
+LatMin: 38.8
+LatMax: 42.5
 
 ## Kalman filter options
 KalmanMode: false
@@ -52,7 +52,7 @@ MakePeriodsCSV: true
 CustomPeriodsCSV: "/path/to/periods.csv"
 
 ## State vector
-CreateAutomaticRectilinearStateVectorFile: false
+CreateAutomaticRectilinearStateVectorFile: true
 nBufferClusters: 8
 BufferDeg: 5
 LandThreshold: 0.25
@@ -76,8 +76,8 @@ PlumeCountFilter: 50
 GroupByCountry: false
 
 ## Custom state vector
-StateVectorFile: "/projects/befa4441/integrated_methane_inversion/src/custom_statevectors/CA_fullres.nc"
-ShapeFile: "/projects/befa4441/integrated_methane_inversion/src/shapefiles/CA/CA/CA_only_imi.shp"
+StateVectorFile: "/path/to/StateVector.nc"
+ShapeFile: "resources/shapefiles/PermianBasin_Extent_201712.shp"
 
 ## Inversion
 ## Notes:
@@ -87,17 +87,16 @@ ShapeFile: "/projects/befa4441/integrated_methane_inversion/src/shapefiles/CA/CA
 ## - PriorErrorBCs is in ppb
 ## - PriorErrorBufferElements is only used if LognormalErrors is true
 LognormalErrors: false
-PriorError: [0.5]
-PriorErrorBCs: [10.0]
-PriorErrorBufferElements: [0.5]
-PriorErrorOH: [0.1]
-ObsError: [15]
-Gamma: [1.0]
+PriorError: 0.5
+PriorErrorBCs: 10.0
+PriorErrorBufferElements: 0.5
+PriorErrorOH: 0.1
+ObsError: 15
+Gamma: 1.0
 PrecomputedJacobian: false
 
 ## Grid
-##   Options are 0.125x0.15625 (GEOS-FP only), 0.25x0.3125 (GEOS-FP only),
-##   0.5x0.625, 2.0x2.5, or 4.0x5.0
+##   Options are 0.25x0.3125 (GEOSFP only), 0.5x0.625, 2.0x2.5, or 4.0x5.0
 Res: "0.25x0.3125"
 
 ## Meteorology
@@ -107,7 +106,7 @@ Met: "GEOSFP"
 ## Setup modules
 ##   Turn on/off different steps in setting up the inversion
 RunSetup: true
-SetupTemplateRundir: true
+SetupTemplateRundir: false
 SetupSpinupRun: false
 SetupJacobianRuns: false
 SetupInversion: false
@@ -118,7 +117,7 @@ SetupPosteriorRun: false
 DoHemcoPriorEmis: true
 DoSpinup: false
 DoJacobian: false
-ReDoJacobian: false
+ReDoJacobian: true
 DoInversion: false
 DoPosterior: false
 
@@ -132,7 +131,7 @@ RequestedCPUs: 8
 RequestedMemory: 10000
 InversionCPUs: 32
 InversionMemory: 64000
-RequestedTime: "0-4:00"
+RequestedTime: "0-10:00"
 SchedulerPartition: "amilan"
 
 ## Max number of simultaneous Jacobian runs from the job array (-1: no limit)
@@ -172,13 +171,9 @@ PerturbValueBCs: 10.0
 ## inversions
 HourlyCH4: true
 
-## IMI validation
-## Turn on ObsPack diagnostic in GEOS-Chem?
-DoObsPack: false
-
 ## Turn on planeflight diagnostic in GEOS-Chem?
 ## For use in comparing GEOS-Chem against planeflight data. The path
-## to those data must be specified in geoschem_config.yml.
+## to those data must be specified in input.geos.
 PLANEFLIGHT: false
 
 ## Turn on old observation operators in GEOS-Chem?
@@ -229,4 +224,4 @@ HemcoPriorEmisDryRun: true
 SpinupDryrun: true
 ProductionDryRun: true
 PosteriorDryRun: true
-BCdryrun: false
+BCdryrun: true

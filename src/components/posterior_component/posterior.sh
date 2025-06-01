@@ -174,7 +174,7 @@ run_posterior() {
     # Submit job to job scheduler
     printf "\n=== SUBMITTING POSTERIOR SIMULATION ===\n"
     sbatch --mem $RequestedMemory \
-        -c $RequestedCPUs \
+        --ntasks=$RequestedCPUs \
         -t $RequestedTime \
         -p $SchedulerPartition \
         -W ${RunName}_Posterior.run

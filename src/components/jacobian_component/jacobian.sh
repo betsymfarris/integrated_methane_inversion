@@ -443,7 +443,7 @@ run_jacobian() {
 
         if "$LognormalErrors"; then
             sbatch --mem $RequestedMemory \
-                -c $RequestedCPUs \
+                --ntasks=$RequestedCPUs \
                 -t $RequestedTime \
                 -p $SchedulerPartition \
                 -W run_bkgd_simulation.sh
@@ -477,7 +477,7 @@ run_jacobian() {
         # Submit prior simulation to job scheduler
         printf "\n=== SUBMITTING PRIOR SIMULATION ===\n"
         sbatch --mem $RequestedMemory \
-            -c $RequestedCPUs \
+            --ntasks=$RequestedCPUs \
             -t $RequestedTime \
             -o imi_output.tmp \
             -p $SchedulerPartition \
@@ -494,7 +494,7 @@ run_jacobian() {
         if "$LognormalErrors"; then
             printf "\n=== SUBMITTING BACKGROUND SIMULATION ===\n"
             sbatch --mem $RequestedMemory \
-                -c $RequestedCPUs \
+                --ntasks=$RequestedCPUs \
                 -t $RequestedTime \
                 -p $SchedulerPartition \
                 -W run_bkgd_simulation.sh

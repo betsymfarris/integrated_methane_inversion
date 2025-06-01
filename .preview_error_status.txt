@@ -1,0 +1,1 @@
+This file is used to tell the controlling script that the imi_preview failed

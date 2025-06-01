@@ -5,7 +5,7 @@ echo "running {END} jacobian simulations" >> {InversionPath}/imi_output.log
 rm -f .error_status_file.txt
 
 sbatch --array={START}-{END}{JOBS} --mem $RequestedMemory \
--c $RequestedCPUs \
+--ntasks=$RequestedCPUs \
 -t $RequestedTime \
 -p $SchedulerPartition \
 -o imi_output.tmp \

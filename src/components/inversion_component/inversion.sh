@@ -86,7 +86,7 @@ run_inversion() {
     InvTime="${InversionTime:-$RequestedTime}"
     # Execute inversion driver script
     sbatch --mem $InvMem \
-        -c $InvCPU \
+        --ntasks=$InvCPU \
         -t $InvTime \
         -p $SchedulerPartition \
         -W run_inversion.sh $FirstSimSwitch

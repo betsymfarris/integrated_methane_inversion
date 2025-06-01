@@ -85,7 +85,7 @@ run_spinup() {
 
     # Submit job to job scheduler
     sbatch --mem $RequestedMemory \
-        -c $RequestedCPUs \
+        --ntasks=$RequestedCPUs \
         -t $RequestedTime \
         -p $SchedulerPartition \
         -W ${RunName}_Spinup.run

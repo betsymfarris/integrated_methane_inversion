@@ -40,15 +40,17 @@ run_preview() {
     if "$UseSlurm"; then
         rm -f .preview_error_status.txt
         chmod +x $preview_file
-        sbatch --mem $RequestedMemory \
-            -c $RequestedCPUs \
+	set -x
+	sbatch --mem $RequestedMemory \
+            --ntasks=$RequestedCPUs \
             -t $RequestedTime \
             -p $SchedulerPartition \
             -o imi_output.tmp \
             -W $preview_file $InversionPath $ConfigPath $state_vector_path $preview_dir $tropomi_cache
         wait
+	set +x
         cat imi_output.tmp >>${InversionPath}/imi_output.log
-        rm imi_output.tmp
+        #rm imi_output.tmp
         # check for any errors
         [ ! -f ".preview_error_status.txt" ] || imi_failed $LINENO
     else

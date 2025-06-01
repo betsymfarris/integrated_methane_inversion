@@ -149,7 +149,7 @@ run_hemco_sa() {
     rm -f .error_status_file.txt
     # Submit job to job scheduler
     sbatch --mem $RequestedMemory \
-        -c $RequestedCPUs \
+        --ntasks=$RequestedCPUs \
         -t $RequestedTime \
         -o ${RunName}_HEMCO_Prior_Emis.log \
         -p $SchedulerPartition \

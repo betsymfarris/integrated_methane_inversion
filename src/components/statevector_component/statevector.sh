@@ -90,7 +90,7 @@ reduce_dimension() {
         rm -f .aggregation_error.txt
         chmod +x $aggregation_file
         sbatch --mem $RequestedMemory \
-            -c $RequestedCPUs \
+            --ntasks=$RequestedCPUs \
             -t $RequestedTime \
             -p $SchedulerPartition \
             -o imi_output.tmp \
