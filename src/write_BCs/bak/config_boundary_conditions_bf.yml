@@ -14,7 +14,7 @@ condaEnv: imi_env
 condaFile: "/projects/befa4441/integrated_methane_inversion/envs/CURC-Alpine/condafile.sh"
 geosChemEnv: "/projects/befa4441/integrated_methane_inversion/envs/CURC-Alpine/gcclassic.rocky+gnu12.minimal.env"
 geosChemDataPath: "/scratch/alpine/befa4441/imi/ExtData"
-partition: atesting
+partition: amilan128c
 
 ## A restart file for GEOS-Chem for your simulation start date
 restartFilePath: "/projects/befa4441/integrated_methane_inversion/src/write_BCs/GEOSChem.Restart.20180401_0000z.nc4"

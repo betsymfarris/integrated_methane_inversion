@@ -2,15 +2,15 @@
 ## Documentation @ https://imi.readthedocs.io/en/latest/getting-started/imi-config-file.html
 
 ## General
-RunName: "CA_SeptWeek1_2024_fullres"
+RunName: "CA_2024_fullres_Kalman"
 isAWS: false
 UseSlurm: true
 SafeMode: true
 S3Upload: false
 
 ## Period of interest
-StartDate: 20240901
-EndDate: 20240908
+StartDate: 20240101
+EndDate: 20250101
 SpinupMonths: 1
 
 ## Use blended TROPOMI+GOSAT data (true)? Or use operational TROPOMI data (false)?
@@ -45,7 +45,7 @@ LatMin: 32.5
 LatMax: 36
 
 ## Kalman filter options
-KalmanMode: false
+KalmanMode: true
 UpdateFreqDays: 7
 NudgeFactor: 0.1
 MakePeriodsCSV: true
@@ -108,19 +108,19 @@ Met: "GEOSFP"
 ##   Turn on/off different steps in setting up the inversion
 RunSetup: true
 SetupTemplateRundir: true
-SetupSpinupRun: false
-SetupJacobianRuns: false
-SetupInversion: false
-SetupPosteriorRun: false
+SetupSpinupRun: true
+SetupJacobianRuns: true
+SetupInversion: true
+SetupPosteriorRun: true
 
 ## Run modules
 ##   Turn on/off different steps in performing the inversion
 DoHemcoPriorEmis: true
-DoSpinup: false
-DoJacobian: false
-ReDoJacobian: false
-DoInversion: false
-DoPosterior: false
+DoSpinup: true
+DoJacobian: true
+ReDoJacobian: true
+DoInversion: true
+DoPosterior: true
 
 ## IMI preview
 ##   NOTE: RunSetup must be true to run preview
@@ -131,8 +131,8 @@ DOFSThreshold: 0
 RequestedCPUs: 8
 RequestedMemory: 10000
 InversionCPUs: 32
-InversionMemory: 64000
-RequestedTime: "0-4:00"
+InversionMemory: 32000
+RequestedTime: "0-12:00"
 SchedulerPartition: "amilan"
 
 ## Max number of simultaneous Jacobian runs from the job array (-1: no limit)
@@ -229,4 +229,4 @@ HemcoPriorEmisDryRun: true
 SpinupDryrun: true
 ProductionDryRun: true
 PosteriorDryRun: true
-BCdryrun: false
+BCdryrun: true

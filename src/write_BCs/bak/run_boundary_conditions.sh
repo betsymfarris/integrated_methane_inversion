@@ -1,11 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=boundary_conditions
-#SBATCH --partition=atesting
-#SBATCH --qos=testing
-#SBATCH --time=1:00:00
-#SBATCH --nodes=1
-#SBATCH --ntasks=4
-#SBATCH --output=debug_%j.log
+#SBATCH --partition=amilan128c
+#SBATCH --qos=normal
+#SBATCH --mem=4000
+#SBATCH --time=00-23:00
+#SBATCH --output=debug.log
 
 cwd="$(pwd)"
 
@@ -111,22 +110,21 @@ fi
 
 # Modify and submit the run script
 cp /projects/befa4441/integrated_methane_inversion/src/write_BCs/geoschem.run .
-#sed -i -e "s|sapphire,huce_cascade,seas_compute,shared|${partition}|g" \
-#    -e "s|--mem=15000|--mem=64000|g" \
-#    -e "s|-t 0-12:00|-t 0-23:00|g" \
-#    -e "s|--ntasks=8|--ntasks=8|g" \
-#    -e "s|-c 8|-c 1|g" \
-#    -e "s|--qos=normal|--qos=normal|g" geoschem.run
-#sbatch -W geoschem.run
-sbatch --export=NONE geoschem.run
-#wait
+sed -i -e "s|sapphire,huce_cascade,seas_compute,shared|${partition}|g" \
+    -e "s|--mem=15000|--mem=64000|g" \
+    -e "s|-t 0-12:00|-t 0-23:00|g" \
+    -e "s|--ntasks=8|--ntasks=8|g" \
+    -e "s|-c 8|-c 1|g" \
+    -e "s|--qos=normal|--qos=normal|g" geoschem.run
+sbatch -W geoschem.run
+wait
 
 # Write the boundary conditions using write_boundary_conditions.py
 cd "${cwd}"
-#sbatch -W -J blended -o boundary_conditions.log --open-mode=append -p ${partition} --qos=normal -t 0-23:00 --mem 64000 -c 20 --wrap "source $condaFile; conda activate $condaEnv; python write_boundary_conditions.py True $blendedDir $gcStartDate $gcEndDate"
-#wait # run for Blended TROPOMI+GOSAT
-#sbatch -W -J tropomi -o boundary_conditions.log --open-mode=append -p ${partition} --qos=normal -t 0-23:00 --mem 64000 -c 20 --wrap "source $condaFile; conda activate $condaEnv; python write_boundary_conditions.py False $tropomiDir $gcStartDate $gcEndDate"
-#wait # run for TROPOMI data
+sbatch -W -J blended -o boundary_conditions.log --open-mode=append -p ${partition} --qos=normal -t 0-23:00 --mem 64000 -c 20 --wrap "source $condaFile; conda activate $condaEnv; python write_boundary_conditions.py True $blendedDir $gcStartDate $gcEndDate"
+wait # run for Blended TROPOMI+GOSAT
+sbatch -W -J tropomi -o boundary_conditions.log --open-mode=append -p ${partition} --qos=normal -t 0-23:00 --mem 64000 -c 20 --wrap "source $condaFile; conda activate $condaEnv; python write_boundary_conditions.py False $tropomiDir $gcStartDate $gcEndDate"
+wait # run for TROPOMI data
 echo "" >>"${cwd}/boundary_conditions.log"
 echo "Blended TROPOMI+GOSAT boundary conditions --> ${workDir}/blended-boundary-conditions" >>"${cwd}/boundary_conditions.log"
 echo "TROPOMI boundary conditions               --> ${workDir}/tropomi-boundary-conditions" >>"${cwd}/boundary_conditions.log"

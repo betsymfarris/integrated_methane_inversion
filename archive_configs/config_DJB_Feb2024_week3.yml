@@ -2,7 +2,7 @@
 ## Documentation @ https://imi.readthedocs.io/en/latest/getting-started/imi-config-file.html
 
 ## General
-RunName: "DJB_Feb2024_week3"
+RunName: "DJB_Feb2024_week3_06262025"
 isAWS: false
 UseSlurm: true
 SafeMode: true
@@ -106,7 +106,7 @@ Met: "GEOSFP"
 ## Setup modules
 ##   Turn on/off different steps in setting up the inversion
 RunSetup: true
-SetupTemplateRundir: true
+SetupTemplateRundir: false
 SetupSpinupRun: false
 SetupJacobianRuns: false
 SetupInversion: false
@@ -114,7 +114,7 @@ SetupPosteriorRun: false
 
 ## Run modules
 ##   Turn on/off different steps in performing the inversion
-DoHemcoPriorEmis: true
+DoHemcoPriorEmis: false
 DoSpinup: false
 DoJacobian: false
 ReDoJacobian: false

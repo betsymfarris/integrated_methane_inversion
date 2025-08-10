@@ -160,7 +160,8 @@ echo "# TROPOMI/blended processor version(s): ${TROPOMI_PROCESSOR_VERSION}" >>"$
 # Download TROPOMI or blended dataset from AWS
 tropomiCache=${RunDirs}/satellite_data
 
-if [[ -z "$DataPathTROPOMI" ]]; then
+if "true"; then
+#if [[ -z "$DataPathTROPOMI" ]]; then
     mkdir -p -v $tropomiCache
 
     if "$BlendedTROPOMI"; then

@@ -1,0 +1,4 @@
+=============Downloading TROPOMI Operational Data=============
+Downloading 4101 files - (2024-01-01 00:00:00,2025-01-01 00:00:00].
+slurmstepd: error: *** JOB 16693136 ON c3cpu-c15-u32-4 CANCELLED AT 2025-08-04T23:21:08 DUE TO TIME LIMIT ***
+slurmstepd: error: Detected 150 oom_kill events in StepId=16693136.batch. Some of the step tasks have been OOM Killed.
