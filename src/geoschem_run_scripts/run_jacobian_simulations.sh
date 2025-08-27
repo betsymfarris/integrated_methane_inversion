@@ -1,6 +1,9 @@
 #!/bin/bash
 #SBATCH -J {RunName}
 #SBATCH -N 1
+#SBATCH --partition=amilan
+#SBATCH --time=0-08:00:00
+#SBATCH --qos=normal
 
 ### Run directory
 RUNDIR=$(pwd -P)

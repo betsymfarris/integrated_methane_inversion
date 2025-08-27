@@ -1,5 +1,8 @@
 #!/bin/bash
 #SBATCH -J {RunName}
+#SBATCH --partition=amilan
+#SBATCH --time=0-08:00:00
+#SBATCH --qos=normal
 #SBATCH -N 1
 
 ### Run directory

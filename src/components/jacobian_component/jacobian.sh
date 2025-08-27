@@ -446,6 +446,7 @@ run_jacobian() {
                 --ntasks=$RequestedCPUs \
                 -t $RequestedTime \
                 -p $SchedulerPartition \
+		--qos=normal \
                 -W run_bkgd_simulation.sh
             wait
         fi
@@ -481,6 +482,7 @@ run_jacobian() {
             -t $RequestedTime \
             -o imi_output.tmp \
             -p $SchedulerPartition \
+	    --qos=normal \
             -W run_prior_simulation.sh
         wait
         cat imi_output.tmp >>${InversionPath}/imi_output.log
@@ -497,6 +499,7 @@ run_jacobian() {
                 --ntasks=$RequestedCPUs \
                 -t $RequestedTime \
                 -p $SchedulerPartition \
+		--qos=normal \
                 -W run_bkgd_simulation.sh
             wait
             # check if background simulation exited with non-zero exit code

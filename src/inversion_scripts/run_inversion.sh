@@ -1,6 +1,10 @@
 #!/bin/bash
 
 #SBATCH -N 1
+#SBATCH --partition=amilan
+#SBATCH --qos=normal
+#SBATCH --time=0-23:00:00
+
 #SBATCH -o run_inversion_%j.out
 
 ##=======================================================================

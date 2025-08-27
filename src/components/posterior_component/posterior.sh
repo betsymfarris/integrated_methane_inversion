@@ -177,6 +177,7 @@ run_posterior() {
         --ntasks=$RequestedCPUs \
         -t $RequestedTime \
         -p $SchedulerPartition \
+	--qos=normal \
         -W ${RunName}_Posterior.run
     wait
 

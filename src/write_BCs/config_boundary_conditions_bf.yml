@@ -1,9 +1,9 @@
 ## Date range (inclusive) that you want to generate BCs for
-startDate: "20180401"
-endDate: "20180510"
+startDate: "20180501"
+endDate: "20180507"
 
 ## A directory with a lot of space where you can write the BCs (and intermediate files)
-workDir: "/scratch/alpine/befa4441/imi/IMI_inputs/ch4/2025v15"
+workDir: "/scratch/alpine/befa4441/imi/IMI_inputs/ch4/v2"
 
 ## Paths to TROPOMI data and blended TROPOMI+GOSAT data
 tropomiDir: "/scratch/alpine/befa4441/imi/IMI_inputs/ch4/tropomi"
@@ -14,7 +14,7 @@ condaEnv: imi_env
 condaFile: "/projects/befa4441/integrated_methane_inversion/envs/CURC-Alpine/condafile.sh"
 geosChemEnv: "/projects/befa4441/integrated_methane_inversion/envs/CURC-Alpine/gcclassic.rocky+gnu12.minimal.env"
 geosChemDataPath: "/scratch/alpine/befa4441/imi/ExtData"
-partition: atesting
+partition: amilan
 
 ## A restart file for GEOS-Chem for your simulation start date
 restartFilePath: "/projects/befa4441/integrated_methane_inversion/src/write_BCs/GEOSChem.Restart.20180401_0000z.nc4"

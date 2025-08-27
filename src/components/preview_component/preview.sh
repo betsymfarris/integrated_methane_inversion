@@ -45,6 +45,7 @@ run_preview() {
             --ntasks=$RequestedCPUs \
             -t $RequestedTime \
             -p $SchedulerPartition \
+	    --qos=normal \
             -o imi_output.tmp \
             -W $preview_file $InversionPath $ConfigPath $state_vector_path $preview_dir $tropomi_cache
         wait

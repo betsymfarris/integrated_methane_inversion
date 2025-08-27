@@ -153,6 +153,7 @@ run_hemco_sa() {
         -t $RequestedTime \
         -o ${RunName}_HEMCO_Prior_Emis.log \
         -p $SchedulerPartition \
+	--qos=normal \
         -W ${RunName}_HEMCO_Prior_Emis.run
     wait
 

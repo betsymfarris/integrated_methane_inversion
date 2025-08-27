@@ -8,6 +8,7 @@ sbatch --array={START}-{END}{JOBS} --mem $RequestedMemory \
 --ntasks=$RequestedCPUs \
 -t $RequestedTime \
 -p $SchedulerPartition \
+--qos=normal \
 -o imi_output.tmp \
 --open-mode=append \
 -W run_jacobian_simulations.sh

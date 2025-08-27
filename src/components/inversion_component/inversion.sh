@@ -89,6 +89,7 @@ run_inversion() {
         --ntasks=$InvCPU \
         -t $InvTime \
         -p $SchedulerPartition \
+	--qos=normal \
         -W run_inversion.sh $FirstSimSwitch
     wait
 

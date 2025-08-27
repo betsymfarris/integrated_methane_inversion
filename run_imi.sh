@@ -1,6 +1,8 @@
 #!/bin/bash
 
 #SBATCH -N 1
+#SBATCH --partition=amilan
+#SBATCH --qos=normal
 #SBATCH --ntasks=1
 #SBATCH --mem=2000
 #SBATCH -o "imi_output.log"
@@ -171,6 +173,7 @@ if "true"; then
     fi
     sbatch --mem=$RequestedMemory \
         --ntasks=$RequestedCPUs \
+	--qos=normal \
         -t $RequestedTime \
         -p $SchedulerPartition \
         -o imi_output.tmp \

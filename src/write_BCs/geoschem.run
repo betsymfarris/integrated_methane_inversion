@@ -1,10 +1,12 @@
 #!/bin/bash
 
-#SBATCH --ntasks=8 #you get 3.75 GRAM per ntask
+#SBATCH --ntasks=1 #you get 3.75 GRAM per ntask
+#SBATCH -c 32
+#SBATCH --mem=96000
 #SBATCH --nodes=1
-#SBATCH --time=1:00:00
-#SBATCH --partition=atesting
-#SBATCH --qos=testing
+#SBATCH --time=8:00:00
+#SBATCH --partition=amilan
+#SBATCH --qos=normal
 #SBATCH --output=geoschem_error_%j.log
 #SBATCH --job-name=geoschem
 #SBATCH --mail-type=END
@@ -38,19 +40,16 @@ source ${geosChemEnv}
 export GC_USER_REGISTERED=true
 export GC_DATA_ROOT="${geosChemDataPath}"
 
+
 # Set the proper # of threads for OpenMP
 # SLURM_CPUS_PER_TASK ensures this matches the number you set with -c above
-#export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-export OMP_NUM_THREADS=1
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 # Run GEOS_Chem.  The "time" command will return CPU and wall times.
 # Stdout and stderr will be directed to the "GC.log" log file
 # (you can change the log file name below if you wish)
 # srun -c $OMP_NUM_THREADS time -p ./gcclassic >> GC.log
-
-export SLURM_EXPORT_ENV=ALL
-env
-mpirun -n $SLURM_NTASKS ./gcclassic 
+/bin/time -p ./gcclassic >> GC.log
 
 # Exit normally
 exit 0

@@ -88,6 +88,7 @@ run_spinup() {
         --ntasks=$RequestedCPUs \
         -t $RequestedTime \
         -p $SchedulerPartition \
+	--qos=normal \
         -W ${RunName}_Spinup.run
     wait
 

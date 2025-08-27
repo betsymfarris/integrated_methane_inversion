@@ -2,7 +2,7 @@
 ## Documentation @ https://imi.readthedocs.io/en/latest/getting-started/imi-config-file.html
 
 ## General
-RunName: "CA_2024_fullres_Kalman"
+RunName: "slurm_update_test4"
 isAWS: false
 UseSlurm: true
 SafeMode: true
@@ -10,7 +10,7 @@ S3Upload: false
 
 ## Period of interest
 StartDate: 20240101
-EndDate: 20250101
+EndDate: 20240103
 SpinupMonths: 1
 
 ## Use blended TROPOMI+GOSAT data (true)? Or use operational TROPOMI data (false)?
@@ -45,7 +45,7 @@ LatMin: 32.5
 LatMax: 36
 
 ## Kalman filter options
-KalmanMode: true
+KalmanMode: false
 UpdateFreqDays: 7
 NudgeFactor: 0.1
 MakePeriodsCSV: true
@@ -124,7 +124,7 @@ DoPosterior: true
 
 ## IMI preview
 ##   NOTE: RunSetup must be true to run preview
-DoPreview: true
+DoPreview: false
 DOFSThreshold: 0
 
 ## Resource allocation settings for slurm jobs
@@ -132,7 +132,7 @@ RequestedCPUs: 8
 RequestedMemory: 10000
 InversionCPUs: 32
 InversionMemory: 32000
-RequestedTime: "0-12:00"
+RequestedTime: "0-08:00"
 SchedulerPartition: "amilan"
 
 ## Max number of simultaneous Jacobian runs from the job array (-1: no limit)

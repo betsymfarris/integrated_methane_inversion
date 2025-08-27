@@ -93,6 +93,7 @@ reduce_dimension() {
             --ntasks=$RequestedCPUs \
             -t $RequestedTime \
             -p $SchedulerPartition \
+	    --qos=normal \
             -o imi_output.tmp \
             -W "${python_args[@]}"
         wait
