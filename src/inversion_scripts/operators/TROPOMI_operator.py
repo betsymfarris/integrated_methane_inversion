@@ -128,6 +128,19 @@ def apply_average_tropomi_operator(
         all_strdate, gc_cache, n_elements, config, build_jacobian
     )
 
+    # Read GEOS-Chem data for simulated truth in OSSE simulation
+    if config["EnableOSSE"]:
+        osse_gc_cache = "./data_geoschem_osse"
+        
+        # check if the osse_gc_cache exists
+        assert os.path.exists(osse_gc_cache), (
+            f"OSSE GEOS-Chem cache directory {osse_gc_cache} does not exist. "
+            "Please run the OSSE simulation first."
+        )
+        synthetic_gc_obs = read_all_geoschem(
+            all_strdate, osse_gc_cache, n_elements, config, False
+        )
+
     # Initialize array with n_gridcells rows and 5 columns. Columns are
     # TROPOMI CH4, GEOSChem CH4, longitude, latitude, observation counts
     obs_GC = np.zeros([n_gridcells, 5], dtype=np.float32)
@@ -167,6 +180,35 @@ def apply_average_tropomi_operator(
             / sum(dry_air_subcolumns)
             * 1e9
         )  # ppb
+
+        if config["EnableOSSE"]:
+            tropomi_synthetic = synthetic_gc_obs[strdate]
+            # Get GEOS-Chem methane for the cell
+            synthetic_CH4 = tropomi_synthetic["CH4"][
+                gridcell_dict["iGC"], gridcell_dict["jGC"], :
+            ]
+            synthetic_sat_CH4 = remap(
+                synthetic_CH4,
+                merged["data_type"],
+                merged["p_merge"],
+                merged["edge_index"],
+                merged["first_gc_edge"],
+            )  # ppb
+            synthetic_sat_CH4_molm2 = (
+                synthetic_sat_CH4 * 1e-9 * dry_air_subcolumns
+            )  # mol m-2
+            synthetic_tropomi = (
+                sum(apriori + avkern * (synthetic_sat_CH4_molm2 - apriori))
+                / sum(dry_air_subcolumns)
+                * 1e9
+            )  # ppb
+            # add random noise to observations
+            noise = np.random.normal(
+                loc=0.0,
+                scale=float(config["ObsErrorOSSE"]),
+                size=synthetic_tropomi.shape,
+            )
+            synthetic_tropomi += noise
 
         # If building Jacobian matrix from GEOS-Chem perturbation simulation sensitivity data:
         if build_jacobian:
@@ -286,9 +328,12 @@ def apply_average_tropomi_operator(
             jacobian_K[i, :] = sensi_xch4
 
         # Save actual and virtual TROPOMI data
-        obs_GC[i, 0] = gridcell_dict[
-            "methane"
-        ]  # Actual TROPOMI methane column observation
+        if config["EnableOSSE"]:
+            obs_GC[i, 0] = synthetic_tropomi  # Synthetic observations if using OSSE
+        else:
+            obs_GC[i, 0] = gridcell_dict[
+                "methane"
+            ]  # Actual TROPOMI methane column observation
         obs_GC[i, 1] = virtual_tropomi  # Virtual TROPOMI methane column observation
         obs_GC[i, 2] = gridcell_dict["lon_sat"]  # TROPOMI longitude
         obs_GC[i, 3] = gridcell_dict["lat_sat"]  # TROPOMI latitude
@@ -689,6 +734,9 @@ def read_tropomi(filename):
             sc = (sc_no_nans.astype("uint8") & 0x03).astype(int)
             sc[nan_mask] = 5
             dat["surface_classification"] = sc
+            sc_0xF9 = (sc_no_nans.astype("uint8") & 0xF9).astype(int)
+            sc_0xF9[nan_mask] = 5
+            dat["surface_classification_0xF9"] = sc_0xF9
 
             # Also get pressure interval and surface pressure for use below
             pressure_interval = (
@@ -779,6 +827,9 @@ def read_blended(filename):
             dat["surface_classification"] = (
                 blended_data["surface_classification"].values[:].astype("uint8") & 0x03
             ).astype(int)
+            dat["surface_classification_0xF9"] = (
+                blended_data["surface_classification"].values[:].astype("uint8") & 0xF9
+                ).astype(int)
             dat["chi_square_SWIR"] = blended_data["chi_square_SWIR"].values[:]
 
             # Remove "Z" from time so that numpy doesn't throw a warning

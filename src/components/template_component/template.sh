@@ -78,8 +78,13 @@ setup_template() {
     cp ${InversionPath}/src/utilities/download_gc_data.py download_gc_data.py
 
     # Modify geoschem_config.yml based on settings in config.yml
-    sed -i -e "s:20190101:${StartDate}:g" \
-        -e "s:20190201:${EndDate}:g" geoschem_config.yml
+    if [ "$Res" == "0.125x0.15625" ]; then
+	sed -i -e "s:20230101:${StartDate}:g" \
+               -e "s:20230201:${EndDate}:g" geoschem_config.yml
+    else
+	sed -i -e "s:20190101:${StartDate}:g" \
+               -e "s:20190201:${EndDate}:g" geoschem_config.yml
+    fi
 
     if "$isRegional"; then
         # Adjust lat/lon bounds because GEOS-Chem defines the domain
@@ -111,11 +116,8 @@ setup_template() {
            sed -i -e "s:\$RES.NA:\$RES.${RegionID}:g" HEMCO_Config.rc.gmao_metfields
         # Modify the METDIR for 0.125x0.15625 simulation
         elif [ "$Res" = "0.125x0.15625" ]; then
-           sed -i -e "s:GEOS_0.25x0.3125_NA\/GEOS_FP:GEOS_0.25x0.3125_${RegionID}\/GEOS_FP:g" HEMCO_Config.rc.gmao_metfields_0125
-           OLD="GEOS_0.125x0.15625_NA/GEOS_FP"
-           NEW="GEOS_0.125x0.15625_${RegionID}/GEOS_FP_DerivedWinds"
-           sed -i "s|$OLD|$NEW|g" HEMCO_Config.rc.gmao_metfields_0125
-           sed -i '/METDIR/d' HEMCO_Config.rc
+           sed -i -e "s:GEOS_0.25x0.3125_NA:GEOS_0.25x0.3125_${RegionID}:g" HEMCO_Config.rc.gmao_metfields_0125
+           sed -i -e "s:GEOS_0.125x0.15625_NA:GEOS_0.125x0.15625_${RegionID}:g" HEMCO_Config.rc.gmao_metfields_0125
 	fi
    fi
 
